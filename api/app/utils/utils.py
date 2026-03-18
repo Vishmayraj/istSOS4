@@ -336,3 +336,14 @@ def build_expand(expand_node):
         parts.append(segment)
 
     return ",".join(parts)
+
+
+def reject_computed_fields(payload: dict, computed_keys: list) -> None:
+    """Raises if payload contains read-only computed fields."""
+    found = [k for k in payload if k in computed_keys]
+    if found:
+        raise Exception(
+            f"{', '.join(found)} are computed fields and cannot be set on create. "
+            "observedArea is derived from linked FeaturesOfInterest geometries, "
+            "phenomenonTime is derived from Observation timestamps."
+        )
