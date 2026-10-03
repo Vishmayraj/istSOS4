@@ -36,7 +36,7 @@ if _API_DIR not in sys.path:
 
 os.environ.setdefault("STAC_TRANSFORMER", "1")
 os.environ.setdefault("DCAT_TRANSFORMER", "1")
-os.environ.setdefault("SECRET_KEY", "test-secret-key-1234567890-test")
+os.environ.setdefault("SECRET_KEY", "test-secret-key-for-connector-tests-0123456789")
 
 import pytest
 
