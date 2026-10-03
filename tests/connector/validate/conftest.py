@@ -29,13 +29,13 @@ app/v1/connector/api.py on gsoc/final-cleanup-and-auth), not guessed:
     already including /connector; override it whole if your deployment
     changes HOSTNAME/SUBPATH/VERSION.
   - api/app/v1/connector/api.py's real DCAT routes are lowercase
-    /dcat/root(.ttl), /dcat/orphan(.ttl), /dcat/{network_id}(.ttl) --
+    /dcat/root(.ttl), /dcat/{network_id}(.ttl) --
     not /DCAT/*. network_id is a path param typed `int`, so
     CONNECTOR_NETWORKS must be a list of integers, not names like
     "network_1" (existing unit tests under tests/connector use ids like
     1, 2, 7 -- 1,2 is a sane default for a dev DB).
-  - /dcat/orphan and /dcat/{network_id} legitimately 404 when NETWORK=0
-    (see api.py's docstrings: orphan/network scopes only exist under
+  - /dcat/{network_id} legitimately 404 when NETWORK=0
+    (see api.py's docstrings: network scopes only exist under
     NETWORK=1) -- that is a real "this scope doesn't exist" answer, not
     "the connector is broken", so it's treated as optional/absent below
     rather than failing the whole fixture. /dcat/root(.ttl) 404 only
@@ -128,7 +128,7 @@ def dcat_turtle_files(connector_base_url) -> list[Path]:
     The connector's own DCAT-AP output, re-fetched every session (it's the
     thing under test). root.ttl is mandatory -- a 404 there means
     DCAT_TRANSFORMER=0 and there is nothing to validate, so that skips the
-    whole suite. orphan.ttl and each network's .ttl are optional: a 404
+    whole suite. Each network's .ttl is optional: a 404
     there just means that scope doesn't exist in this deployment
     (NETWORK=0, or that network id isn't populated) and is skipped
     per-file, not treated as a failure.
@@ -151,9 +151,10 @@ def dcat_turtle_files(connector_base_url) -> list[Path]:
     root_dest.write_bytes(root_resp.content)
     files.append(root_dest)
 
-    optional_endpoints = {}
-    for network in NETWORKS:
-        optional_endpoints[f"network_{network}.ttl"] = f"{connector_base_url}/dcat/{network}.ttl"
+    optional_endpoints = {
+        f"network_{network}.ttl": f"{connector_base_url}/dcat/{network}.ttl"
+        for network in NETWORKS
+    }
 
     for filename, url in optional_endpoints.items():
         resp = _get(url)

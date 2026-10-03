@@ -28,10 +28,10 @@ reachable, tests skip (not fail) so this doesn't break unrelated CI runs.
 
 - `dcat/root.ttl` -- always required. A 404 here means `DCAT_TRANSFORMER=0`
   on the connector, and the whole suite skips (nothing to validate).
-- `dcat/orphan.ttl` and `dcat/{network_id}.ttl` for each id in
-  `CONNECTOR_NETWORKS` -- optional. A 404 on these is a legitimate "this
-  scope doesn't exist here" (e.g. `NETWORK=0`, or that network id isn't in
-  the DB), so it's skipped per-file rather than failing the fixture.
+- `dcat/{network_id}.ttl` for each id in `CONNECTOR_NETWORKS` -- optional.
+  A 404 on these is a legitimate "this scope doesn't exist here" (e.g.
+  `NETWORK=0`, or that network id isn't in the DB), so it's skipped
+  per-file rather than failing the fixture.
 - `dcat-ap-SHACL.ttl` -- the official DCAT-AP 3.0.0 shapes from SEMICeu,
   cached for a week.
 - STAC conformance reads `{CONNECTOR_BASE_URL}/stac` directly via pystac's
