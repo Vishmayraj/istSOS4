@@ -6,8 +6,8 @@ pydantic==2.13.4
 pyjwt==2.13.0
 python-dateutil==2.9.0.post0
 sly==0.5
-pydantic-settings
-apscheduler
+pydantic-settings==2.15.0
+apscheduler==3.11.3
 python-multipart==0.0.32
 redis==8.0.1
 sqlalchemy==2.0.51
