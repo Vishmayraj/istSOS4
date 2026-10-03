@@ -30,7 +30,7 @@ v1/connector/
 
 ## How it works
 
-Nothing in this package runs per request except the API layer itself. On a fixed interval (`HARVEST_INTERVAL_MINUTES`, default `5`), APScheduler fires `scheduled_harvest_job()`. That job:
+Nothing in this package runs per request except the API layer itself. On a fixed interval (`HARVEST_INTERVAL_MINUTES`, default `15`), APScheduler fires `scheduled_harvest_job()`. That job:
 
 1. Takes a Postgres advisory lock, so two workers never harvest at once.
 2. Runs one JOIN query across `Thing`, `Location`, `Datastream`, `ObservedProperty`, and `Sensor` (a second query joins `Network` too, when `NETWORK=1`), and folds the rows into a `HarvestedCatalog` / `HarvestedNetworkCatalog`.
@@ -111,7 +111,7 @@ Everything below lives in `config.py`, either as a `Settings` (pydantic) field o
 | `OPEN_CATALOG_METADATA` | `1` | In strict auth mode, whether shallow catalog routes stay public. |
 | `CATALOG_CLOSED_NETWORKS` | *(unset)* | Comma-separated network ids and/or names to hide from unauthenticated callers. |
 | `STAC_AUTH_DESCRIPTION` | *(a sensible default)* | Text shown in the STAC auth extension's login instructions. |
-| `HARVEST_INTERVAL_MINUTES` | `5` | How often `scheduled_harvest_job()` fires. |
+| `HARVEST_INTERVAL_MINUTES` | `15` | How often `scheduled_harvest_job()` fires. |
 | `STAC_CATALOG_ID` | `istsos-connector-catalog` | `id` of the root STAC Catalog. |
 | `STAC_CATALOG_TITLE` | *(unset)* | Optional human-readable title for the root STAC Catalog. |
 | `STAC_DEPLOYMENT_NAME` | `istSOS4` | Interpolated into the root Catalog's description text. |

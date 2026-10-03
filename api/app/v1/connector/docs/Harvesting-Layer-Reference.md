@@ -270,4 +270,4 @@ One environment variable used, defined in `v1/connector/config.py`:
 
 | Variable | Default | Notes |
 |---|---|---|
-| `HARVEST_INTERVAL_MINUTES` | `5` | How often `scheduled_harvest_job()` fires.|
+| `HARVEST_INTERVAL_MINUTES` | `15` | How often `scheduled_harvest_job()` fires.|
